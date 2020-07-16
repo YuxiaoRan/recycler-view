@@ -20,7 +20,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    val mWordList: LinkedList<String> = LinkedList<String>()
+    val viewModel: MyViewModel? = MyViewModel.obtainViewModel(javaClass.simpleName)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        Toast.makeText(this, "SIZE SIZE " + viewModel!!.getWordListSize(), Toast.LENGTH_LONG).show()
 
         tab_layout.addTab(tab_layout.newTab().setText("Words"))
         tab_layout.addTab(tab_layout.newTab().setText("Tech News"))

@@ -11,12 +11,13 @@ import java.util.*
 
 class WordListAdapter: RecyclerView.Adapter<WordListAdapter.WordViewHolder> {
 
-    private val mWordList: LinkedList<String>
+    //private val mWordList: LinkedList<String>
+    private val mViewMoedl: DataViewModel
     private var mInflater: LayoutInflater
 
-    constructor(context: Context?, wordList: LinkedList<String>) {
+    constructor(context: Context?, viewModel: DataViewModel) {
         mInflater = LayoutInflater.from(context)
-        this.mWordList = wordList
+        this.mViewMoedl = viewModel
     }
 
     override fun onCreateViewHolder(
@@ -29,11 +30,11 @@ class WordListAdapter: RecyclerView.Adapter<WordListAdapter.WordViewHolder> {
     }
 
     override fun getItemCount(): Int {
-        return mWordList.size
+        return mViewMoedl.getWordListSize()
     }
 
     override fun onBindViewHolder(holder: WordListAdapter.WordViewHolder, position: Int) {
-        val mCurrent: String = mWordList.get(position)
+        val mCurrent: String = mViewMoedl.getWordList().get(position)
         holder.wordItemView.text = mCurrent
     }
 
@@ -49,8 +50,8 @@ class WordListAdapter: RecyclerView.Adapter<WordListAdapter.WordViewHolder> {
 
         override fun onClick(p0: View?) {
             val mPosition: Int = layoutPosition
-            val element: String = mWordList.get(mPosition)
-            mWordList.set(mPosition, "Clicked! " + element)
+            val element: String = mViewMoedl.getWordList().get(mPosition)
+            mViewMoedl.update(mPosition, "Clicked! " + element)
             mAdapter.notifyDataSetChanged()
         }
     }

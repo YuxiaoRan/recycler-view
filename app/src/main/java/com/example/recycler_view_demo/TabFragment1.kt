@@ -31,7 +31,8 @@ class TabFragment1 : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private lateinit var mWordList: LinkedList<String>
+    //private lateinit var mWordList: LinkedList<String>
+    private lateinit var mViewModel: MyViewModel
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mAdapter: WordListAdapter
 
@@ -46,22 +47,19 @@ class TabFragment1 : Fragment() {
                 .setAction("Action", null).show()
         }
 
-        mWordList = (activity as MainActivity).mWordList
-
-        for (i in 0 until wordCount) {
-            mWordList.addLast("Word " + i)
-        }
+        //mWordList = (activity as MainActivity).viewModel.getWordList()
+        mViewModel = (activity as MainActivity).viewModel!!
 
         fab.setOnClickListener {
-            mWordList.addLast("Word " + wordCount)
-            mRecyclerView.adapter?.notifyItemChanged(mWordList.size)
-            mRecyclerView.smoothScrollToPosition(mWordList.size)
-            Toast.makeText(this.context, "new Word created: " + wordCount, Toast.LENGTH_SHORT).show()
-            wordCount++
+            mViewModel.addNewWord()
+            mRecyclerView.adapter?.notifyItemChanged(mViewModel.getWordListSize())
+            mRecyclerView.smoothScrollToPosition(mViewModel.getWordListSize())
+            Toast.makeText(this.context, "new Word created: " + (MyViewModel.sCount - 1), Toast.LENGTH_SHORT).show()
         }
 
         mRecyclerView = view.findViewById(R.id.recyclerview)
-        mAdapter = WordListAdapter(this.context, mWordList)
+        mAdapter = WordListAdapter(this.context, mViewModel)
+        Toast.makeText(this.context, "SIZE: " + mViewModel.getWordListSize(), Toast.LENGTH_SHORT).show()
         mRecyclerView.adapter = mAdapter
         mRecyclerView.layoutManager = LinearLayoutManager(this.context)
         return view
@@ -77,9 +75,6 @@ class TabFragment1 : Fragment() {
     }
 
     companion object {
-
-        private var wordCount: Int = 20
-
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
